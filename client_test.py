@@ -21,11 +21,38 @@ class ClientTest(unittest.TestCase):
       self.assertEqual(getDataPoint(quote), (quote['stock'], quote['top_bid']['price'], quote['top_ask']['price'], (quote['top_bid']['price'] + quote['top_ask']['price'])/2))
 
   """ ------------ Add more unit tests ------------ """
-  def test_getRatio_isNotUndefined(self):
-    """ Test in case any of the prices equals to zero """
+  def test_getRatio_isUndefined(self):
     price_a = 121.2
-    price_b = 121.68
-    self.assertNotEqual(getRatio(price_a, price_b), 0,0)
+    price_b = 0
+    self.assertEqual(getRatio(price_a, price_b), None)
+    
+  
+  
+  
+  def test_getRatio_ratioUndefined(self):
+    price_a = 119.2
+    price_b = 0
+    self.assertIsNone(getRatio(price_a, price_b))
+  
+  def test_getRatio_priceAZero(self):
+    price_a = 0
+    price_b = 119.8
+    self.assertEqual(getRatio(price_a, price_b), 0)
+    
+  def test_getRatio_isGreaterThanOne(self):
+    price_a = 120
+    price_b = 110
+    self.assertGreater(getRatio(price_a, price_b), 1)
+    
+  def test_getRatio_isLesserThanOne(self):
+    price_a = 102
+    price_b = 110
+    self.assertLess(getRatio(price_a, price_b), 1)
+    
+  def test_getRatio_isOne(self):
+    price_a = 121.58
+    price_b = 121.58
+    self.assertEqual(getRatio(price_a, price_b), 1)
 
 
 if __name__ == '__main__':
